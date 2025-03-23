@@ -1,0 +1,253 @@
+{
+    "info": {
+      "name": "Medical API (UUID CRUD)",
+      "_postman_id": "abc12345-def6-7890-ghij-klmnopqrstuv",
+      "description": "Postman Collection for managing doctors, specialties, patients, and appointments using UUID-based CRUD.",
+      "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "variable": [
+      {
+        "key": "base_url",
+        "value": "http://localhost:3000"
+      }
+    ],
+    "item": [
+      {
+        "name": "Doctors",
+        "item": [
+          {
+            "name": "Get All Doctors",
+            "request": {
+              "method": "GET",
+              "url": {
+                "raw": "{{base_url}}/doctors",
+                "host": ["{{base_url}}"],
+                "path": ["doctors"]
+              }
+            }
+          },
+          {
+            "name": "Create Doctor",
+            "request": {
+              "method": "POST",
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": {
+                "mode": "raw",
+                "raw": "{\n  \"name\": \"Dr. Jane Smith\",\n  \"email\": \"jane.smith@clinic.com\",\n  \"specialty_id\": \"{{specialty_id}}\"\n}"
+              },
+              "url": {
+                "raw": "{{base_url}}/doctors",
+                "host": ["{{base_url}}"],
+                "path": ["doctors"]
+              }
+            }
+          },
+          {
+            "name": "Update Doctor",
+            "request": {
+              "method": "PUT",
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": {
+                "mode": "raw",
+                "raw": "{\n  \"name\": \"Dr. Updated Name\",\n  \"email\": \"updated@clinic.com\",\n  \"specialty_id\": \"{{specialty_id}}\"\n}"
+              },
+              "url": {
+                "raw": "{{base_url}}/doctors/{{doctor_id}}",
+                "host": ["{{base_url}}"],
+                "path": ["doctors", "{{doctor_id}}"]
+              }
+            }
+          },
+          {
+            "name": "Delete Doctor",
+            "request": {
+              "method": "DELETE",
+              "url": {
+                "raw": "{{base_url}}/doctors/{{doctor_id}}",
+                "host": ["{{base_url}}"],
+                "path": ["doctors", "{{doctor_id}}"]
+              }
+            }
+          }
+        ]
+      },
+      {
+        "name": "Specialties",
+        "item": [
+          {
+            "name": "Get All Specialties",
+            "request": {
+              "method": "GET",
+              "url": {
+                "raw": "{{base_url}}/specialties",
+                "host": ["{{base_url}}"],
+                "path": ["specialties"]
+              }
+            }
+          },
+          {
+            "name": "Create Specialty",
+            "request": {
+              "method": "POST",
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": {
+                "mode": "raw",
+                "raw": "{\n  \"name\": \"Oncology\"\n}"
+              },
+              "url": {
+                "raw": "{{base_url}}/specialties",
+                "host": ["{{base_url}}"],
+                "path": ["specialties"]
+              }
+            }
+          },
+          {
+            "name": "Update Specialty",
+            "request": {
+              "method": "PUT",
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": {
+                "mode": "raw",
+                "raw": "{\n  \"name\": \"Updated Specialty\"\n}"
+              },
+              "url": {
+                "raw": "{{base_url}}/specialties/{{specialty_id}}",
+                "host": ["{{base_url}}"],
+                "path": ["specialties", "{{specialty_id}}"]
+              }
+            }
+          },
+          {
+            "name": "Delete Specialty",
+            "request": {
+              "method": "DELETE",
+              "url": {
+                "raw": "{{base_url}}/specialties/{{specialty_id}}",
+                "host": ["{{base_url}}"],
+                "path": ["specialties", "{{specialty_id}}"]
+              }
+            }
+          }
+        ]
+      },
+      {
+        "name": "Patients",
+        "item": [
+          {
+            "name": "Get All Patients",
+            "request": {
+              "method": "GET",
+              "url": {
+                "raw": "{{base_url}}/patients",
+                "host": ["{{base_url}}"],
+                "path": ["patients"]
+              }
+            }
+          },
+          {
+            "name": "Create Patient",
+            "request": {
+              "method": "POST",
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": {
+                "mode": "raw",
+                "raw": "{\n  \"name\": \"John Doe\",\n  \"email\": \"john.doe@example.com\",\n  \"birthdate\": \"1990-01-01\"\n}"
+              },
+              "url": {
+                "raw": "{{base_url}}/patients",
+                "host": ["{{base_url}}"],
+                "path": ["patients"]
+              }
+            }
+          },
+          {
+            "name": "Update Patient",
+            "request": {
+              "method": "PUT",
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": {
+                "mode": "raw",
+                "raw": "{\n  \"name\": \"John Updated\",\n  \"email\": \"john.updated@example.com\",\n  \"birthdate\": \"1991-02-02\"\n}"
+              },
+              "url": {
+                "raw": "{{base_url}}/patients/{{patient_id}}",
+                "host": ["{{base_url}}"],
+                "path": ["patients", "{{patient_id}}"]
+              }
+            }
+          },
+          {
+            "name": "Delete Patient",
+            "request": {
+              "method": "DELETE",
+              "url": {
+                "raw": "{{base_url}}/patients/{{patient_id}}",
+                "host": ["{{base_url}}"],
+                "path": ["patients", "{{patient_id}}"]
+              }
+            }
+          }
+        ]
+      },
+      {
+        "name": "Appointments",
+        "item": [
+          {
+            "name": "Get All Appointments",
+            "request": {
+              "method": "GET",
+              "url": {
+                "raw": "{{base_url}}/appointments",
+                "host": ["{{base_url}}"],
+                "path": ["appointments"]
+              }
+            }
+          },
+          {
+            "name": "Create Appointment",
+            "request": {
+              "method": "POST",
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": {
+                "mode": "raw",
+                "raw": "{\n  \"doctor_id\": \"{{doctor_id}}\",\n  \"patient_id\": \"{{patient_id}}\",\n  \"date\": \"2024-04-10\",\n  \"time\": \"09:30\",\n  \"notes\": \"Initial Consultation\"\n}"
+              },
+              "url": {
+                "raw": "{{base_url}}/appointments",
+                "host": ["{{base_url}}"],
+                "path": ["appointments"]
+              }
+            }
+          },
+          {
+            "name": "Update Appointment",
+            "request": {
+              "method": "PUT",
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": {
+                "mode": "raw",
+                "raw": "{\n  \"doctor_id\": \"{{doctor_id}}\",\n  \"patient_id\": \"{{patient_id}}\",\n  \"date\": \"2024-04-11\",\n  \"time\": \"10:00\",\n  \"notes\": \"Updated follow-up\"\n}"
+              },
+              "url": {
+                "raw": "{{base_url}}/appointments/{{appointment_id}}",
+                "host": ["{{base_url}}"],
+                "path": ["appointments", "{{appointment_id}}"]
+              }
+            }
+          },
+          {
+            "name": "Delete Appointment",
+            "request": {
+              "method": "DELETE",
+              "url": {
+                "raw": "{{base_url}}/appointments/{{appointment_id}}",
+                "host": ["{{base_url}}"],
+                "path": ["appointments", "{{appointment_id}}"]
+              }
+            }
+          }
+        ]
+      }
+    ]
+  }
+  

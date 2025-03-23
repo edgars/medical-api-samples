@@ -1,0 +1,327 @@
+openapi: 3.0.0
+info:
+  title: Medical API
+  version: 1.0.0
+  description: API for managing doctors, specialties, patients, and appointments.
+
+servers:
+  - url: http://localhost:3000
+
+paths:
+  /doctors:
+    get:
+      summary: Get all doctors
+      responses:
+        '200':
+          description: List of doctors
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Doctor'
+    post:
+      summary: Create a new doctor
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DoctorInput'
+      responses:
+        '201':
+          description: Doctor created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Doctor'
+
+  /doctors/{id}:
+    put:
+      summary: Update a doctor
+      parameters:
+        - $ref: '#/components/parameters/UUID'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DoctorInput'
+      responses:
+        '200':
+          description: Doctor updated
+    delete:
+      summary: Delete a doctor
+      parameters:
+        - $ref: '#/components/parameters/UUID'
+      responses:
+        '200':
+          description: Doctor deleted
+
+  /specialties:
+    get:
+      summary: Get all specialties
+      responses:
+        '200':
+          description: List of specialties
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Specialty'
+    post:
+      summary: Create a new specialty
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SpecialtyInput'
+      responses:
+        '201':
+          description: Specialty created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Specialty'
+
+  /specialties/{id}:
+    put:
+      summary: Update a specialty
+      parameters:
+        - $ref: '#/components/parameters/UUID'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SpecialtyInput'
+      responses:
+        '200':
+          description: Specialty updated
+    delete:
+      summary: Delete a specialty
+      parameters:
+        - $ref: '#/components/parameters/UUID'
+      responses:
+        '200':
+          description: Specialty deleted
+
+  /patients:
+    get:
+      summary: Get all patients
+      responses:
+        '200':
+          description: List of patients
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Patient'
+    post:
+      summary: Create a new patient
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatientInput'
+      responses:
+        '201':
+          description: Patient created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Patient'
+
+  /patients/{id}:
+    put:
+      summary: Update a patient
+      parameters:
+        - $ref: '#/components/parameters/UUID'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatientInput'
+      responses:
+        '200':
+          description: Patient updated
+    delete:
+      summary: Delete a patient
+      parameters:
+        - $ref: '#/components/parameters/UUID'
+      responses:
+        '200':
+          description: Patient deleted
+
+  /appointments:
+    get:
+      summary: Get all appointments
+      responses:
+        '200':
+          description: List of appointments
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Appointment'
+    post:
+      summary: Create a new appointment
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AppointmentInput'
+      responses:
+        '201':
+          description: Appointment created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Appointment'
+
+  /appointments/{id}:
+    put:
+      summary: Update an appointment
+      parameters:
+        - $ref: '#/components/parameters/UUID'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AppointmentInput'
+      responses:
+        '200':
+          description: Appointment updated
+    delete:
+      summary: Delete an appointment
+      parameters:
+        - $ref: '#/components/parameters/UUID'
+      responses:
+        '200':
+          description: Appointment deleted
+
+components:
+  parameters:
+    UUID:
+      name: id
+      in: path
+      required: true
+      description: UUID of the resource
+      schema:
+        type: string
+        format: uuid
+
+  schemas:
+    Doctor:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        email:
+          type: string
+        specialty_id:
+          type: string
+          format: uuid
+
+    DoctorInput:
+      type: object
+      required: [name, email, specialty_id]
+      properties:
+        name:
+          type: string
+        email:
+          type: string
+        specialty_id:
+          type: string
+          format: uuid
+
+    Specialty:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+
+    SpecialtyInput:
+      type: object
+      required: [name]
+      properties:
+        name:
+          type: string
+
+    Patient:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        email:
+          type: string
+        birthdate:
+          type: string
+          format: date
+
+    PatientInput:
+      type: object
+      required: [name, email, birthdate]
+      properties:
+        name:
+          type: string
+        email:
+          type: string
+        birthdate:
+          type: string
+          format: date
+
+    Appointment:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        doctor_id:
+          type: string
+          format: uuid
+        patient_id:
+          type: string
+          format: uuid
+        date:
+          type: string
+          format: date
+        time:
+          type: string
+        notes:
+          type: string
+
+    AppointmentInput:
+      type: object
+      required: [doctor_id, patient_id, date, time]
+      properties:
+        doctor_id:
+          type: string
+          format: uuid
+        patient_id:
+          type: string
+          format: uuid
+        date:
+          type: string
+          format: date
+        time:
+          type: string
+        notes:
+          type: string
