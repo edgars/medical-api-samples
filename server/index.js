@@ -17,6 +17,14 @@ app.get('/specialties', async (req, res) => {
     res.json(result);
 });
 
+app.get('/specialties/:id', async (req, res) => {
+    const { id } = req.params;
+    if (!isUUID(id)) return res.status(400).json({ error: 'Invalid UUID' });
+    const specialty = await db.get('SELECT * FROM specialties WHERE id = ?', [id]);
+    if (!specialty) return res.status(404).json({ error: 'Specialty not found' });
+    res.json(specialty);
+});
+
 app.post('/specialties', async (req, res) => {
     const { name } = req.body;
     const id = uuidv4();
@@ -24,11 +32,15 @@ app.post('/specialties', async (req, res) => {
     res.status(201).json({ id, name });
 });
 
-app.put('/specialties/:id', async (req, res) => {
+app.patch('/specialties/:id', async (req, res) => {
     const { id } = req.params;
     const { name } = req.body;
     if (!isUUID(id)) return res.status(400).json({ error: 'Invalid UUID' });
-    await db.run('UPDATE specialties SET name = ? WHERE id = ?', [name, id]);
+
+    const existing = await db.get('SELECT * FROM specialties WHERE id = ?', [id]);
+    if (!existing) return res.status(404).json({ error: 'Specialty not found' });
+
+    await db.run('UPDATE specialties SET name = ? WHERE id = ?', [name || existing.name, id]);
     res.json({ message: 'Specialty updated', id });
 });
 
@@ -46,6 +58,14 @@ app.get('/doctors', async (req, res) => {
     res.json(result);
 });
 
+app.get('/doctors/:id', async (req, res) => {
+    const { id } = req.params;
+    if (!isUUID(id)) return res.status(400).json({ error: 'Invalid UUID' });
+    const doctor = await db.get('SELECT * FROM doctors WHERE id = ?', [id]);
+    if (!doctor) return res.status(404).json({ error: 'Doctor not found' });
+    res.json(doctor);
+});
+
 app.post('/doctors', async (req, res) => {
     const { name, email, specialty_id } = req.body;
     const id = uuidv4();
@@ -53,11 +73,23 @@ app.post('/doctors', async (req, res) => {
     res.status(201).json({ id, name, email, specialty_id });
 });
 
-app.put('/doctors/:id', async (req, res) => {
+app.patch('/doctors/:id', async (req, res) => {
     const { id } = req.params;
     const { name, email, specialty_id } = req.body;
     if (!isUUID(id)) return res.status(400).json({ error: 'Invalid UUID' });
-    await db.run('UPDATE doctors SET name = ?, email = ?, specialty_id = ? WHERE id = ?', [name, email, specialty_id, id]);
+
+    const existing = await db.get('SELECT * FROM doctors WHERE id = ?', [id]);
+    if (!existing) return res.status(404).json({ error: 'Doctor not found' });
+
+    await db.run(
+        'UPDATE doctors SET name = ?, email = ?, specialty_id = ? WHERE id = ?',
+        [
+            name || existing.name,
+            email || existing.email,
+            specialty_id || existing.specialty_id,
+            id
+        ]
+    );
     res.json({ message: 'Doctor updated', id });
 });
 
@@ -75,6 +107,14 @@ app.get('/patients', async (req, res) => {
     res.json(result);
 });
 
+app.get('/patients/:id', async (req, res) => {
+    const { id } = req.params;
+    if (!isUUID(id)) return res.status(400).json({ error: 'Invalid UUID' });
+    const patient = await db.get('SELECT * FROM patients WHERE id = ?', [id]);
+    if (!patient) return res.status(404).json({ error: 'Patient not found' });
+    res.json(patient);
+});
+
 app.post('/patients', async (req, res) => {
     const { name, email, birthdate } = req.body;
     const id = uuidv4();
@@ -82,11 +122,23 @@ app.post('/patients', async (req, res) => {
     res.status(201).json({ id, name, email, birthdate });
 });
 
-app.put('/patients/:id', async (req, res) => {
+app.patch('/patients/:id', async (req, res) => {
     const { id } = req.params;
     const { name, email, birthdate } = req.body;
     if (!isUUID(id)) return res.status(400).json({ error: 'Invalid UUID' });
-    await db.run('UPDATE patients SET name = ?, email = ?, birthdate = ? WHERE id = ?', [name, email, birthdate, id]);
+
+    const existing = await db.get('SELECT * FROM patients WHERE id = ?', [id]);
+    if (!existing) return res.status(404).json({ error: 'Patient not found' });
+
+    await db.run(
+        'UPDATE patients SET name = ?, email = ?, birthdate = ? WHERE id = ?',
+        [
+            name || existing.name,
+            email || existing.email,
+            birthdate || existing.birthdate,
+            id
+        ]
+    );
     res.json({ message: 'Patient updated', id });
 });
 
@@ -104,6 +156,14 @@ app.get('/appointments', async (req, res) => {
     res.json(result);
 });
 
+app.get('/appointments/:id', async (req, res) => {
+    const { id } = req.params;
+    if (!isUUID(id)) return res.status(400).json({ error: 'Invalid UUID' });
+    const appointment = await db.get('SELECT * FROM appointments WHERE id = ?', [id]);
+    if (!appointment) return res.status(404).json({ error: 'Appointment not found' });
+    res.json(appointment);
+});
+
 app.post('/appointments', async (req, res) => {
     const { doctor_id, patient_id, date, time, notes } = req.body;
     const id = uuidv4();
@@ -111,11 +171,25 @@ app.post('/appointments', async (req, res) => {
     res.status(201).json({ id, doctor_id, patient_id, date, time, notes });
 });
 
-app.put('/appointments/:id', async (req, res) => {
+app.patch('/appointments/:id', async (req, res) => {
     const { id } = req.params;
     const { doctor_id, patient_id, date, time, notes } = req.body;
     if (!isUUID(id)) return res.status(400).json({ error: 'Invalid UUID' });
-    await db.run('UPDATE appointments SET doctor_id = ?, patient_id = ?, date = ?, time = ?, notes = ? WHERE id = ?', [doctor_id, patient_id, date, time, notes, id]);
+
+    const existing = await db.get('SELECT * FROM appointments WHERE id = ?', [id]);
+    if (!existing) return res.status(404).json({ error: 'Appointment not found' });
+
+    await db.run(
+        'UPDATE appointments SET doctor_id = ?, patient_id = ?, date = ?, time = ?, notes = ? WHERE id = ?',
+        [
+            doctor_id || existing.doctor_id,
+            patient_id || existing.patient_id,
+            date || existing.date,
+            time || existing.time,
+            notes || existing.notes,
+            id
+        ]
+    );
     res.json({ message: 'Appointment updated', id });
 });
 
@@ -126,7 +200,7 @@ app.delete('/appointments/:id', async (req, res) => {
     res.json({ message: 'Appointment deleted', id });
 });
 
-// ---------- OpenAPI Spec Route ----------
+// ---------- OpenAPI YAML Route ----------
 
 app.get('/open-api', (req, res) => {
     const filePath = path.join(__dirname, '../openapi.yaml');
