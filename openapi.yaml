@@ -5,7 +5,7 @@ info:
   description: REST API for managing doctors, specialties, patients, and appointments (UUID-based).
 
 servers:
-  - url: http://localhost:3000
+  - url: https://medical-api.on.qriarlabs.com
 
 paths:
   /doctors:
